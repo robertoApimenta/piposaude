@@ -66,12 +66,18 @@ module.exports = {
     async delete(req, res) {
         try {
             const beneficio = await beneficios.findById(req.params.id);
-            await beneficios.findOneAndDelete(req.params.id)
-                .then(() => res.status(204).json({ message: 'Benefício deletado', }))
-                .catch(() => res.status(204).json());
+            if (!beneficio) {
+                return res.status(404).json({
+                    message: 'Cliente não encontrado',
+                });
+            }
+            await beneficios.findOneAndRemove({_id: req.params.id });
+            return res.status(200).json({
+                message: `Benefício ${beneficio.nome} deletado.`,
+            });
         } catch (err) {
             return res.status(404).json({
-                message: 'Benefício não encontrado',
+                message: 'Cliente não encontrado',
             });
         }
     },

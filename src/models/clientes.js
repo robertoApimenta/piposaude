@@ -1,16 +1,16 @@
 const mongoose = require('mongoose');
 
 const DataSchema = new mongoose.Schema({
-    nome: {
+    razaoSocial: {
         type: String,
         required: true
     },
-    categoria: {
+    cnpj: {
         type: String,
         required: false
     },
 });
 
-const beneficios = mongoose.model('beneficios', DataSchema);
+const clientes = mongoose.model('clientes', DataSchema);
 
-module.exports = beneficios;
+module.exports = clientes;
