@@ -1,4 +1,5 @@
 const users = require('../models/users');
+const beneficiosClientes = require('../models/beneficiosClientes');
 const { validationResult } = require('express-validator');
 
 module.exports = {
@@ -10,18 +11,52 @@ module.exports = {
 
     async create(req, res) {
         const errors = validationResult(req);
-        const { nome, cpf, dataAdmissao, email, endereco, peso, altura, horasMeditadas } = req.body;
-        if (!errors.isEmpty() || !nome || !cpf || !dataAdmissao || !email || !endereco || !peso || !altura || !horasMeditadas) {
-            return res.status(400).json({
+        const { id, nome, cpf, email } = req.body;
+        const idEmpresa = id;
+        if (!errors.isEmpty() || !nome || !cpf || !email) {
+            return res.json({
+                erro: true,
                 mensagem: 'Dados inválidos, tente novamente.'
             });
         }
-        await users.findOne({ email }).then((dados) => {
-            if (!dados) {
-                users.create({ nome, cpf, dataAdmissao, email, endereco, peso, altura, horasMeditadas });
-                return res.status(201).json({ mensagem: `Usuário ${nome} cadastrado com sucesso` });
-            }
-            return res.status(409).json({ mensagem: 'Email já registrado' });
+        const usuario = await users.findOne({ cpf });
+        if (!usuario) {
+            await users.create({ idEmpresa, nome, cpf, email });
+            return res.status(201).json({
+                erro: false,
+                mensagem: `Funcionario ${nome} cadastrado com sucesso`
+            });
+        }
+        return res.json({
+            erro: true,
+            mensagem: 'CPF já cadastrado'
+        })
+    },
+    async read(req, res) {
+        const id = req.params.id;
+        const usuarios = await users.find({ idEmpresa: id });
+        return res.json({
+            usuarios
+        })
+    },
+    async delete(req, res) {
+        const funcionario = await users.findOneAndRemove({ _id: req.params.id });
+        return res.status(200).json({
+            message: `Funcionário ${funcionario.nome} deletado.`,
         });
+    },
+    async readId(req, res) {
+        try {
+            const funcionario = await users.findById(req.params.id);           
+            const beneficios = await beneficiosClientes.find({ idCliente: funcionario.idEmpresa });
+            return res.status(200).json({
+                funcionario,
+                beneficios
+            });
+        } catch (err) {
+            return res.status(404).json({
+                message: 'Funcionario não encontrado',
+            });
+        }
     },
 }

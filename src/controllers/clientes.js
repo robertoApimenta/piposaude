@@ -57,7 +57,7 @@ module.exports = {
         try {
             const cliente = await clientes.findById(req.params.id);
             const update = { razaoSocial, cnpj };
-            await clientes.findOneAndUpdate(req.params.id, update, {
+            await clientes.findByIdAndUpdate(req.params.id, update, {
                 new: true,
             });
             return res.status(200).json({ mensagem: `Cliente: ${razaoSocial}, editado com sucesso` });

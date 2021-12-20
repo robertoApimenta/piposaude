@@ -6,10 +6,15 @@ const { body } = require('express-validator');
 const users = require('../controllers/users');
 const beneficios = require('../controllers/beneficios');
 const clientes = require('../controllers/clientes');
+const beneficiosClientes = require('../controllers/beneficiosClientes');
 
 // Rotas user
 routes.get('/funcionarios', users.index);
 routes.post('/novoFuncionario', [body('email').isEmail()], users.create);
+routes.get('/listarFuncionarios/:id', users.read);
+routes.delete('/deletarFuncionario/:id', users.delete);
+routes.get('/listarFuncionario/:id', users.readId);
+
 
 // Rotas benefícios
 routes.get('/beneficios', beneficios.index);
@@ -26,5 +31,13 @@ routes.get('/listarClientes', clientes.read);
 routes.get('/listarCliente/:id', clientes.readId);
 routes.put('/editarCliente/:id', clientes.update);
 routes.delete('/deletarCliente/:id', clientes.delete);
+
+// Rotas Clientes
+routes.get('/beneficiosClientes', beneficiosClientes.index);
+routes.post('/novoBeneficiosClientes', beneficiosClientes.create);
+routes.get('/listarBeneficiosClientes/:id', beneficiosClientes.read);
+routes.delete('/deletarBeneficiosClientes/:id', beneficiosClientes.delete);
+
+
 
 module.exports = routes;
