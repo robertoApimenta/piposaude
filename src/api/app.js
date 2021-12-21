@@ -12,7 +12,8 @@ app.use(cors());
 app.use(express.json());
 app.use(routes);
 
-const uri = 'mongodb+srv://roberto:PGupFSoeUpiXyKS2@cluster0.ynjbf.mongodb.net/pipo?retryWrites=true&w=majority';
+//const uri = 'mongodb+srv://roberto:PGupFSoeUpiXyKS2@cluster0.ynjbf.mongodb.net/pipo?retryWrites=true&w=majority';
+const uri = 'mongodb://localhost:27017/pipo'
 
 mongoose.connect(uri, {
     useNewUrlParser: true
