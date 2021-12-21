@@ -7,7 +7,6 @@ const mongoose = require('mongoose');
 const routes = require('./routes');
 
 const app = express();
-const PORT = 5000;
 
 app.use(cors());
 app.use(express.json());
@@ -23,6 +22,6 @@ mongoose.connect(uri, {
     console.log(`Erro ao tentar conxão com o banco de dados ${err}`);
 });
 
-app.listen(PORT, ()  => {
-    console.log(`Servidor rodando em http://localhost:${PORT}`);
+app.listen(process.env.PORT || 5000, ()  => {
+    console.log('Servidor rodando em http://localhost:5000');
 });
