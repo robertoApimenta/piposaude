@@ -11,9 +11,9 @@ app.use(cors());
 app.use(express.json());
 app.use(routes);
 
-mongoose.connect('mongodb://localhost:27017/pipo', {
-    useNewUrlParser: true,
-}).then(() => {
+const uri = 'mongodb+srv://roberto:PGupFSoeUpiXyKS2@cluster0.ynjbf.mongodb.net/pipo?retryWrites=true&w=majority';
+
+mongoose.connect(uri).then(() => {
     console.log('Conectado ao banco de dados');
 }).catch(err => {
     console.log(`Erro ao tentar conxão com o banco de dados ${err}`);
