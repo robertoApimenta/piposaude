@@ -7,7 +7,15 @@ module.exports = {
         });
     },
     async create(req, res) {
-        const { idFuncionario, idBeneficio} = req.body;
+        const { 
+            idFuncionario, 
+            idBeneficio, 
+            dataAdmissao,
+            endereco,
+            peso,
+            altura,
+            horas
+        } = req.body;
         if (!idFuncionario || !idBeneficio) {
             return res.status(400).json({
                 mensagem: 'Dados inválidos, tente novamente.'
@@ -15,7 +23,15 @@ module.exports = {
         }
         await beneficiosFuncionarios.findOne({ idFuncionario, idBeneficio }).then((dados) => {
             if (!dados) {
-                beneficiosFuncionarios.create({ idFuncionario, idBeneficio });
+                beneficiosFuncionarios.create({ 
+                    idFuncionario, 
+                    idBeneficio, 
+                    dataAdmissao,
+                    endereco,
+                    peso,
+                    altura,
+                    horas 
+                });
                 return res.status(201).json({ mensagem: `Registrado com sucesso` });
             }
             return res.status(409).json({ mensagem: 'Benefíco já registrado' });
